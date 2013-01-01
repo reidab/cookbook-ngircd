@@ -20,7 +20,6 @@
 default['ngircd']['dir'] = ::File.join ::File::SEPARATOR, "etc", "ngircd"
 default['ngircd']['conf'] = ::File.join node['ngircd']['dir'], "ngircd.conf"
 default['ngircd']['motd'] = ::File.join node['ngircd']['dir'], "ngircd.motd"
-default['ngircd']['ssl_cert'] = ::File.join ::File::SEPARATOR, "etc", "ssl", "certs", "irc.pem"
 default['ngircd']['motd_text'] = nil
 default['ngircd']['user'] = "irc"
 default['ngircd']['group'] = "irc"
@@ -39,6 +38,7 @@ default['ngircd']['admin_name'] = "Description"
 default['ngircd']['admin_location'] = "Location"
 default['ngircd']['admin_email'] = "admin@irc.server"
 default['ngircd']['use_ssl'] = true
+default['ngircd']['ssl_req'] = "/C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=#{node['ngircd']['server_name']}/emailAddress=#{node['ngircd']['admin_email']}"
 default['ngircd']['ssl_ports'] = [ "6697" ]
 default['ngircd']['non_ssl_ports'] = [ "6667" ]
 default['ngircd']['operators'] = {}

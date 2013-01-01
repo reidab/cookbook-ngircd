@@ -89,16 +89,31 @@ describe "ngircd::server" do
 
       it "has ssl key file" do
         @chef_run.should create_file_with_content @file,
-          "SSLKeyFile = /etc/ssl/certs/irc.pem"
+          "SSLKeyFile = /etc/ngircd/irc.pem"
       end
 
       it "has ssl cert file" do
         @chef_run.should create_file_with_content @file,
-          "SSLCertFile = /etc/ssl/certs/irc.pem"
+          "SSLCertFile = /etc/ngircd/irc.pem"
       end
 
       #TODO(retr0h): Added self-signed cert ability to openssl cookbook.
       it "creates cert file" do
+        @chef_run.should execute_command <<-EOF.gsub(/^\s{10}/, "")
+          umask 077
+          openssl genrsa 2048 > irc.key
+          openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=irc.example.com/emailAddress=admin@irc.server -new -x509 -nodes -sha1 -days 3650 -key irc.key > irc.crt
+          cat irc.key irc.crt > irc.pem
+        EOF
+      end
+
+      it "doesn't create cert file when exists" do
+        pending "Determine how to handle guards"
+      end
+
+      it "executes in the proper cwd" do
+        pending "Doesn't seem to work properly"
+        #@chef_run.execute("create self-signed cert").cwd
       end
     end
 
@@ -124,6 +139,10 @@ describe "ngircd::server" do
 
         chef_run.should create_file_with_content @file,
           "Ports = 6667,6668,6669"
+      end
+
+      it "doesn't create cert file" do
+        @chef_run.execute("create self-signed cert").should be_nil
       end
     end
 
@@ -170,6 +189,51 @@ describe "ngircd::server" do
     it "has max join" do
       @chef_run.should create_file_with_content @file,
         "MaxJoins = 10"
+    end
+
+    it "has channels" do
+      chef_run = ::ChefSpec::ChefRunner.new do |n|
+        n.set['ngircd'] = {}
+        n.set['ngircd']['channels'] = [{
+          "name" => "channel1",
+          "topic" => "topic1",
+          "modes" => "modes1"
+        }]
+      end.converge "ngircd::server"
+      chef_run.should create_file_with_content @file,
+        "[Channel]"
+      chef_run.should create_file_with_content @file,
+        "Name = channel1"
+      chef_run.should create_file_with_content @file,
+        "Topic = topic1"
+      chef_run.should create_file_with_content @file,
+        "Modes = modes1"
+    end
+
+    it "doesn't have channels" do
+      @chef_run.should_not create_file_with_content @file,
+        "[Channel]"
+    end
+
+    it "has operators" do
+      chef_run = ::ChefSpec::ChefRunner.new do |n|
+        n.set['ngircd'] = {}
+        n.set['ngircd']['operators'] = [{
+          "name" => "oper1",
+          "password" => "pass1"
+        }]
+      end.converge "ngircd::server"
+      chef_run.should create_file_with_content @file,
+        "[Operator]"
+      chef_run.should create_file_with_content @file,
+        "Name = oper1"
+      chef_run.should create_file_with_content @file,
+        "Password = pass1"
+    end
+
+    it "doesn't have operators" do
+      @chef_run.should_not create_file_with_content @file,
+        "[Operator]"
     end
 
     it "restarts ngircd" do

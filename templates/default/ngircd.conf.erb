@@ -32,10 +32,10 @@
 	SSLPorts = <%= @ports %>
 
 	# SSL Server Key
-	SSLKeyFile = <%= node['ngircd']['ssl_cert'] %>
+	SSLKeyFile = <%= ::File.join node['ngircd']['dir'], "irc.pem" %>
 
 	# SSL Server Key Certificate
-	SSLCertFile = <%= node['ngircd']['ssl_cert'] %>
+	SSLCertFile = <%= ::File.join node['ngircd']['dir'], "irc.pem" %>
   <% else -%>
 	# Ports on which the server should listen. There may be more than
 	# one port, separated with ",". (Default: 6667)
@@ -92,7 +92,7 @@
 	Name = <%= operator['name'] %>
 
   # Password of the IRC operator
-  Password = <%= @creds['opers'][operator['name']] %>
+  Password = <%= operator['password'] %>
 <% end %>
 
 [Server]

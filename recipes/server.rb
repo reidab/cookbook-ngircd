@@ -18,16 +18,21 @@
 #
 
 #creds = encrypted_data_bag "secrets", "irc"
-#bash "installing a self-signed cert" do
-#  code <<-EOF
-#    openssl req \
-#      -x509 -nodes -days 365 \
-#      -subj "/C=US/ST=Palo Alto/L=California/CN=#{node[:ngircd][:server_name]}" \
-#      -newkey rsa:1024 -keyout #{node[:ngircd][:ssl_key_file]} -out #{node[:ngircd][:ssl_key_file]}
-#  EOF
 
-#  not_if { ::File.exists? node[:ngircd][:ssl_key_file] }
-#end
+
+if node['ngircd']['use_ssl']
+  execute "create self-signed cert" do
+    cwd = node['ngircd']['dir']
+    command <<-EOF.gsub(/^\s{6}/, "")
+      umask 077
+      openssl genrsa 2048 > irc.key
+      openssl req -subj #{node['ngircd']['ssl_req']} -new -x509 -nodes -sha1 -days 3650 -key irc.key > irc.crt
+      cat irc.key irc.crt > irc.pem
+    EOF
+
+    not_if { ::File.exists? ::File.join node['ngircd']['dir'], "irc.key" }
+  end
+end
 
 package "ngircd" do
   action :upgrade

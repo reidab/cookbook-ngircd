@@ -17,70 +17,62 @@ Attributes
 * `default['ngircd']['motd_text']` - Text to use as the IRC server's motd.
 * `default['ngircd']['user']` -  The user the server runs as.
 * `default['ngircd']['group']` - The group the server runs as.
-* `default[:ngircd][:server_name]` - IRC server's name, also used when generating self signed cert.
+* `default['ngircd']['pid_file']` - Path to the server's pid file.
+* `default['ngircd']['server_password']` - Global password for all users needed
+  to connect to the server.
+* `default['ngircd']['listen_address']` - IP address on which the server should
+  listen.
+* `default['ngircd']['ping_timeout']` - After <ping_timeout> seconds of
+  inactivity the server will send a PING to the peer to test whether it is
+  alive or not.
+* `default['ngircd']['pong_timeout']` - If a client fails to answer a PING with
+  a PONG within <pong_timeout> seconds, it will be disconnected by the server.
+* `default['ngircd']['connect_retry']` - The server tries every <connect_retry>
+  seconds to establish a link to not yet (or no longer) connected servers.
+* `default['ngircd']['oper_can_use_mode']` - Should IRC Operators be allowed to
+  use the MODE command even if they are not(!) channel-operators?
+* `default['ngircd']['max_connections']` - Maximum number of simultaneous
+  connection the server is allowed to accept (<=0: unlimited).
+* `default['ngircd']['max_connections_ip']` - Maximum number of simultaneous
+  connections from a single IP address the server will accept (<=0: unlimited).
+* `default['ngircd']['max_joins']` - Maximum number of channels a user can be
+  member of (<=0: no limit).
+* `default[:ngircd][:server_name]` - IRC server's name.
 * `default[:ngircd][:admin_name]` - Administrator's name.
 * `default[:ngircd][:admin_location]` - Server's location.
 * `default[:ngircd][:admin_email]` - Administrator's email.
+* `default['ngircd']['use_ssl']` - The server uses SSL (default: true).
+* `default['ngircd']['ssl_req']` - String used to generate a self-signed SSL
+  cert.
+* `default['ngircd']['ssl_ports']` - An array containing the IRC server's SSL
+  listen ports.
+* `default['ngircd']['non_ssl_ports']` - An aray containing the IRC servers
+  non-SSL listen ports.
+* `default['ngircd']['operators']` - Define IRC operators.  An array of hashes
+  can be used to configure operators.  See example(s) below.
+* `default['ngircd']['channels']` - Pre-defined channels can be configured, and
+  created when the server starts.  An array of hashes can be used to configure
+  such channels.  See example(s) below.
 
+Creating operators.  This is generally set by a wrapper cookbook, and populated
+by an encrypted data bag.
 
+```json
+"operators": [{
+    "name": "name of oper",
+    "password": "oper password"
+}]
+```
 
-## After <PingTimeout> seconds of inactivity the server will send a
-## PING to the peer to test whether it is alive or not.
-#PingTimeout = 120
+Creating channels.
 
-## If a client fails to answer a PING with a PONG within <PongTimeout>
-## seconds, it will be disconnected by the server.
-#PongTimeout = 20
-
-## The server tries every <ConnectRetry> seconds to establish a link
-## to not yet (or no longer) connected servers.
-#ConnectRetry = 60
-
-## Should IRC Operators be allowed to use the MODE command even if
-## they are not(!) channel-operators?
-#OperCanUseMode = yes
-
-## Maximum number of simultaneous connection the server is allowed
-## to accept (<=0: unlimited):
-#MaxConnections = 500
-
-## Maximum number of simultaneous connections from a single IP address
-## the server will accept (<=0: unlimited):
-#MaxConnectionsIP = 10
-
-## Maximum number of channels a user can be member of (<=0: no limit):
-#MaxJoins = 10
-
-
-
-
-#* `default[:ngircd][:ssl]` - Use SSL (default: true).
-#If :ssl
-#* `default[:ngircd][:ssl_ports]` = IRC server's ssl ports.
-#* `default[:ngircd][:ssl_key_file]` = IRC server's ssl key file.
-#* `default[:ngircd][:ssl_cert_file]` = IRC server's ssl cert file.
-#Otherwise
-#* `default[:ngircd][:non_ssl_ports]` - An array containing the IRC server's non-ssl listen ports.
-#
-#* These attributes are required.
-#
-#* `node[:ngircd][:operators]` - An array with server's operator information.
-#
-#    "operators": [
-#      {
-#        "name": "Name",
-#      }
-#    ]
-#
-#* `node[:ngircd][:channels]` - An array with server's chennel information.
-#
-#    "channels": [
-#      {
-#        "name": "Channel Name",
-#        "topic": "Topic Name",
-#        "modes": "Modes"
-#      }
-#    ]
+```json
+"channels": [{
+    "name": "name of channel",
+    "topic": "channel topic",
+    "modes": "channel modes"
+}]
+```
 
 Usage
 =====
