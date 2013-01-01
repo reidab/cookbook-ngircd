@@ -41,6 +41,7 @@ service "ngircd" do
   action [:start, :enable]
 end
 
+### FC023: Don't agree with this rule.
 if node['ngircd']['motd_text']
   template node['ngircd']['motd'] do
     source "ngircd.motd.erb"
@@ -48,7 +49,7 @@ if node['ngircd']['motd_text']
     group  node['ngircd']['group']
     mode   00644
 
-    notifies :restart, resources(:service => "ngircd")
+    notifies :restart, "service[ngircd]"
   end
 end
 
@@ -68,5 +69,5 @@ template node['ngircd']['conf'] do
     :ports => ports.join(",")
   )
 
-  notifies :restart, resources(:service => "ngircd")
+  notifies :restart, "service[ngircd]"
 end
