@@ -17,9 +17,6 @@
 # limitations under the License.
 #
 
-#creds = encrypted_data_bag "secrets", "irc"
-
-
 if node['ngircd']['use_ssl']
   execute "create self-signed cert" do
     cwd = node['ngircd']['dir']
@@ -57,8 +54,8 @@ end
 
 template node['ngircd']['conf'] do
   source "ngircd.conf.erb"
-  owner  "irc"
-  group  "irc"
+  owner  node['ngircd']['user']
+  group  node['ngircd']['group']
   mode   00600
 
   if node['ngircd']['use_ssl']
