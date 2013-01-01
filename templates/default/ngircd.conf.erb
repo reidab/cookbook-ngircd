@@ -27,20 +27,20 @@
 	# so the server listens on all IP addresses of the system)
 	Listen = <%= node['ngircd']['listen_address'] %>
 
-<% if node['ngircd']['ssl'] %>
+  <% if node['ngircd']['use_ssl'] %>
 	# Additional Listen Ports that expect SSL/TLS encrypted connections
-	SSLPorts = <%= node['ngircd']['ssl_ports'] %>
+	SSLPorts = <%= @ports %>
 
 	# SSL Server Key
-	SSLKeyFile = <%= node['ngircd']['ssl_key_file'] %>
+	SSLKeyFile = <%= node['ngircd']['ssl_cert'] %>
 
 	# SSL Server Key Certificate
-	SSLCertFile = <%= node['ngircd']['ssl_cert_file'] %>
-<% else -%>
+	SSLCertFile = <%= node['ngircd']['ssl_cert'] %>
+  <% else -%>
 	# Ports on which the server should listen. There may be more than
 	# one port, separated with ",". (Default: 6667)
 	Ports = <%= @ports %>
-<% end -%>
+  <% end -%>
 
 	# Text file with the "message of the day" (MOTD). This message will
 	# be shown to all users connecting to the server:

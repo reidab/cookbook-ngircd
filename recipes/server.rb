@@ -56,8 +56,14 @@ template node['ngircd']['conf'] do
   group  "irc"
   mode   00600
 
+  if node['ngircd']['use_ssl']
+    ports = node['ngircd']['ssl_ports']
+  else
+    ports = node['ngircd']['non_ssl_ports']
+  end
+
   variables(
-    :ports => node['ngircd']['ports'].join(",")
+    :ports => ports.join(",")
   )
 
   notifies :restart, resources(:service => "ngircd")

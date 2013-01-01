@@ -17,18 +17,16 @@
 # limitations under the License.
 #
 
-
 default['ngircd']['dir'] = ::File.join ::File::SEPARATOR, "etc", "ngircd"
 default['ngircd']['conf'] = ::File.join node['ngircd']['dir'], "ngircd.conf"
 default['ngircd']['motd'] = ::File.join node['ngircd']['dir'], "ngircd.motd"
+default['ngircd']['ssl_cert'] = ::File.join ::File::SEPARATOR, "etc", "ssl", "certs", "irc.pem"
 default['ngircd']['motd_text'] = nil
-
 default['ngircd']['user'] = "irc"
 default['ngircd']['group'] = "irc"
 default['ngircd']['pid_file'] = ::File.join ::File::SEPARATOR, "var", "run", "ngircd", "ngircd.pid"
 default['ngircd']['server_password'] = nil
 default['ngircd']['listen_address'] = "0.0.0.0"
-
 default['ngircd']['ping_timeout'] = "120"
 default['ngircd']['pong_timeout'] = "20"
 default['ngircd']['connect_retry'] = "60"
@@ -36,15 +34,12 @@ default['ngircd']['oper_can_use_mode'] = "yes"
 default['ngircd']['max_connections'] = "500"
 default['ngircd']['max_connections_ip'] = "10"
 default['ngircd']['max_joins'] = "10"
-
 default['ngircd']['server_name'] = "irc.example.com"
 default['ngircd']['admin_name'] = "Description"
 default['ngircd']['admin_location'] = "Location"
 default['ngircd']['admin_email'] = "admin@irc.server"
-
-#default['ngircd']['ssl'] = true
-#default['ngircd']['ssl_ports'] = "6697"
-default['ngircd']['ports'] = ["6667"]
-
+default['ngircd']['use_ssl'] = true
+default['ngircd']['ssl_ports'] = [ "6697" ]
+default['ngircd']['non_ssl_ports'] = [ "6667" ]
 default['ngircd']['operators'] = {}
 default['ngircd']['channels'] = {}

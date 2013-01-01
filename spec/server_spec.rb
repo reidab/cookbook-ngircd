@@ -70,19 +70,61 @@ describe "ngircd::server" do
         "Listen = 0.0.0.0"
     end
 
-    it "has listen port" do
-      @chef_run.should create_file_with_content @file,
-        "Ports = 6667"
+    describe "with ssl" do
+      it "has listen port" do
+        @chef_run.should create_file_with_content @file,
+          "SSLPorts = 6697"
+      end
+
+      it "has listen ports" do
+        chef_run = ::ChefSpec::ChefRunner.new do |n|
+          n.set['ngircd'] = {}
+          n.set['ngircd']['use_ssl'] = true
+          n.set['ngircd']['ssl_ports'] = [ "6697", "443" ]
+        end.converge "ngircd::server"
+
+        chef_run.should create_file_with_content @file,
+          "Ports = 6697,443"
+      end
+
+      it "has ssl key file" do
+        @chef_run.should create_file_with_content @file,
+          "SSLKeyFile = /etc/ssl/certs/irc.pem"
+      end
+
+      it "has ssl cert file" do
+        @chef_run.should create_file_with_content @file,
+          "SSLCertFile = /etc/ssl/certs/irc.pem"
+      end
+
+      #TODO(retr0h): Added self-signed cert ability to openssl cookbook.
+      it "creates cert file" do
+      end
     end
 
-    it "has listen ports" do
-      chef_run = ::ChefSpec::ChefRunner.new do |n|
-        n.set['ngircd'] = {}
-        n.set['ngircd']['ports'] = [ "6667", "6668", "6669" ]
-      end.converge "ngircd::server"
+    describe "without ssl" do
+      before do
+        @chef_run = ::ChefSpec::ChefRunner.new do |n|
+          n.set['ngircd'] = {}
+          n.set['ngircd']['use_ssl'] = false
+        end.converge "ngircd::server"
+      end
 
-      chef_run.should create_file_with_content @file,
-        "Ports = 6667,6668,6669"
+      it "has listen port" do
+        @chef_run.should create_file_with_content @file,
+          "Ports = 6667"
+      end
+
+      it "has listen ports" do
+        chef_run = ::ChefSpec::ChefRunner.new do |n|
+          n.set['ngircd'] = {}
+          n.set['ngircd']['use_ssl'] = false
+          n.set['ngircd']['non_ssl_ports'] = [ "6667", "6668", "6669" ]
+        end.converge "ngircd::server"
+
+        chef_run.should create_file_with_content @file,
+          "Ports = 6667,6668,6669"
+      end
     end
 
     it "has motd file" do
