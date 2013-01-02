@@ -3,6 +3,8 @@ Description
 
 Installs/Configures ngircd
 
+Will likely add Server Peering/Configuration over the next few weeks.
+
 Requirements
 ============
 
