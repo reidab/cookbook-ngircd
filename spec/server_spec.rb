@@ -122,8 +122,7 @@ describe "ngircd::server" do
       end
 
       it "executes in the proper cwd" do
-        pending "Doesn't seem to work properly"
-        #@chef_run.execute("create self-signed cert").cwd
+        @chef_run.execute("create self-signed cert").cwd.should == "/etc/ngircd"
       end
     end
 
@@ -236,7 +235,7 @@ describe "ngircd::server" do
 
       it "has ident" do
         @chef_run.should create_file_with_content @file,
-          "Ident = yes"
+          "Ident = no"
       end
 
       it "has more privacy" do

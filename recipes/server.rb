@@ -17,10 +17,14 @@
 # limitations under the License.
 #
 
+package "ngircd" do
+  action :upgrade
+end
+
 if node['ngircd']['use_ssl']
   # TODO(retr0h): Should openssl install be brought in?
   execute "create self-signed cert" do
-    cwd = node['ngircd']['dir']
+    cwd node['ngircd']['dir']
     command <<-EOF.gsub(/^\s{6}/, "")
       umask 077
       openssl genrsa 2048 > irc.key
@@ -30,10 +34,6 @@ if node['ngircd']['use_ssl']
 
     not_if { ::File.exists? ::File.join node['ngircd']['dir'], "irc.key" }
   end
-end
-
-package "ngircd" do
-  action :upgrade
 end
 
 service "ngircd" do
