@@ -63,9 +63,6 @@ if node['ngircd']['motd_text']
   end
 end
 
-#Make this dir and chown it
-#/var/run/ngircd/ngircd.pid
-
 template node['ngircd']['conf'] do
   source "ngircd.conf.erb"
   owner  node['ngircd']['user']

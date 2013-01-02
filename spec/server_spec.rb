@@ -81,8 +81,8 @@ describe "ngircd::server" do
     end
 
     it "doesn't have server password" do
-      @chef_run.should create_file_with_content @file,
-        "Password = "
+      @chef_run.should_not create_file_with_content @file,
+        " Password = "
     end
 
     it "has pid file" do
