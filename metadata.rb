@@ -1,3 +1,4 @@
+name             "ngircd"
 maintainer       "John Dewey"
 maintainer_email "john@dewey.ws"
 license          "Apache 2.0"
@@ -7,6 +8,4 @@ version          "0.1.0"
 
 recipe           "ngircd::server", "Installs/Configures ngircd"
 
-%w{ debian ubuntu }.each do |os|
-  supports os
-end
+supports         "ubuntu", ">= 12.04"

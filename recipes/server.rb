@@ -18,6 +18,7 @@
 #
 
 if node['ngircd']['use_ssl']
+  # TODO(retr0h): Should openssl install be brought in?
   execute "create self-signed cert" do
     cwd = node['ngircd']['dir']
     command <<-EOF.gsub(/^\s{6}/, "")
@@ -52,6 +53,9 @@ if node['ngircd']['motd_text']
     notifies :restart, "service[ngircd]"
   end
 end
+
+#Make this dir and chown it
+#/var/run/ngircd/ngircd.pid
 
 template node['ngircd']['conf'] do
   source "ngircd.conf.erb"

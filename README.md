@@ -32,11 +32,11 @@ Attributes
 * `default['ngircd']['oper_can_use_mode']` - Should IRC Operators be allowed to
   use the MODE command even if they are not(!) channel-operators?
 * `default['ngircd']['max_connections']` - Maximum number of simultaneous
-  connection the server is allowed to accept (<=0: unlimited).
+  connection the server is allowed to accept (0: unlimited).
 * `default['ngircd']['max_connections_ip']` - Maximum number of simultaneous
-  connections from a single IP address the server will accept (<=0: unlimited).
+  connections from a single IP address the server will accept (0: unlimited).
 * `default['ngircd']['max_joins']` - Maximum number of channels a user can be
-  member of (<=0: no limit).
+  member of (0: no limit).
 * `default[:ngircd][:server_name]` - IRC server's name.
 * `default[:ngircd][:admin_name]` - Administrator's name.
 * `default[:ngircd][:admin_location]` - Server's location.
