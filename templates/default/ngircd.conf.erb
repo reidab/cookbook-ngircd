@@ -22,11 +22,11 @@
 # /usr/share/doc/ngircd/examples/sample-ngircd.conf.gz
 
 [Global]
-	# The [Global] section of this file is used to define the main
-	# configuration of the server, like the server name and the ports
-	# on which the server should be listening.
-	# These settings depend on your personal preferences, so you should
-	# make sure that they correspond to your installation and setup!
+  # The [Global] section of this file is used to define the main
+  # configuration of the server, like the server name and the ports
+  # on which the server should be listening.
+  # These settings depend on your personal preferences, so you should
+  # make sure that they correspond to your installation and setup!
 
   # Server name in the IRC network, must contain at least one dot
   # (".") and be unique in the IRC network. Required!
@@ -38,34 +38,34 @@
   AdminInfo2 = <%= node['ngircd']['admin_location'] %>
   AdminEMail = <%= node['ngircd']['admin_email'] %>
 
-	# Info text of the server. This will be shown by WHOIS and
-	# LINKS requests for example.
-	Info = Yet another IRC Server running on Debian GNU/Linux
+  # Info text of the server. This will be shown by WHOIS and
+  # LINKS requests for example.
+  Info = Yet another IRC Server running on Debian GNU/Linux
 
-	# Comma separated list of IP addresses on which the server should
-	# listen. Default values are:
-	# "0.0.0.0" or (if compiled with IPv6 support) "::,0.0.0.0"
-	# so the server listens on all IP addresses of the system by default.
+  # Comma separated list of IP addresses on which the server should
+  # listen. Default values are:
+  # "0.0.0.0" or (if compiled with IPv6 support) "::,0.0.0.0"
+  # so the server listens on all IP addresses of the system by default.
   Listen = <%= node['ngircd']['listen_address'] %>
 
-	# Text file with the "message of the day" (MOTD). This message will
-	# be shown to all users connecting to the server:
+  # Text file with the "message of the day" (MOTD). This message will
+  # be shown to all users connecting to the server:
   MotdFile = <%= node['ngircd']['motd'] %>
 
-	# A simple Phrase (<256 chars) if you don't want to use a motd file.
-	;MotdPhrase = "Hello. This is the Debian default MOTD sentence"
+  # A simple Phrase (<256 chars) if you don't want to use a motd file.
+  ;MotdPhrase = "Hello. This is the Debian default MOTD sentence"
 
-	# Global password for all users needed to connect to the server.
-	# (Default: not set)
+  # Global password for all users needed to connect to the server.
+  # (Default: not set)
   <% if node['ngircd']['server_password'] -%>
   Password = <%= node['ngircd']['server_password'] %>
   <% end -%>
 
-	# This tells ngIRCd to write its current process ID to a file.
-	# Note that the pidfile is written AFTER chroot and switching the
-	# user ID, e.g. the directory the pidfile resides in must be
-	# writeable by the ngIRCd user and exist in the chroot directory.
-	# Keep this setting in sync with PIDFILE in /etc/init.d/ngircd
+  # This tells ngIRCd to write its current process ID to a file.
+  # Note that the pidfile is written AFTER chroot and switching the
+  # user ID, e.g. the directory the pidfile resides in must be
+  # writeable by the ngIRCd user and exist in the chroot directory.
+  # Keep this setting in sync with PIDFILE in /etc/init.d/ngircd
   PidFile = <%= node['ngircd']['pid_file'] %>
 
   <% unless node['ngircd']['use_ssl'] -%>
@@ -74,150 +74,150 @@
   Ports = <%= @ports %>
   <% end -%>
 
-	# Group ID under which the ngircd should run; you can use the name
-	# of the group or the numerical ID. ATTENTION: For this to work the
-	# server must have been started with root privileges!
-	# Keep this setting in sync with DAEMONUSER in /etc/init.d/ngircd
-	ServerGID = <%= node['ngircd']['group'] %>
+  # Group ID under which the ngircd should run; you can use the name
+  # of the group or the numerical ID. ATTENTION: For this to work the
+  # server must have been started with root privileges!
+  # Keep this setting in sync with DAEMONUSER in /etc/init.d/ngircd
+  ServerGID = <%= node['ngircd']['group'] %>
 
-	# User ID under which the server should run; you can use the name
-	# of the user or the numerical ID. ATTENTION: For this to work the
-	# server must have been started with root privileges! In addition,
-	# the configuration and MOTD files must be readable by this user,
-	# otherwise RESTART and REHASH won't work!
-	# Keep this setting in sync with DAEMONUSER in /etc/init.d/ngircd
-	ServerUID = <%= node['ngircd']['user'] %>
+  # User ID under which the server should run; you can use the name
+  # of the user or the numerical ID. ATTENTION: For this to work the
+  # server must have been started with root privileges! In addition,
+  # the configuration and MOTD files must be readable by this user,
+  # otherwise RESTART and REHASH won't work!
+  # Keep this setting in sync with DAEMONUSER in /etc/init.d/ngircd
+  ServerUID = <%= node['ngircd']['user'] %>
 
 [Limits]
-	# Define some limits and timeouts for this ngIRCd instance. Default
-	# values should be safe, but it is wise to double-check :-)
+  # Define some limits and timeouts for this ngIRCd instance. Default
+  # values should be safe, but it is wise to double-check :-)
 
   # The server tries every <ConnectRetry> seconds to establish a link
   # to not yet (or no longer) connected servers.
   ConnectRetry = <%= node['ngircd']['limits']['connect_retry'] %>
 
-	# Maximum number of simultaneous in- and outbound connections the
-	# server is allowed to accept (0: unlimited):
+  # Maximum number of simultaneous in- and outbound connections the
+  # server is allowed to accept (0: unlimited):
   MaxConnections = <%= node['ngircd']['limits']['max_connections'] %>
 
-	# Maximum number of simultaneous connections from a single IP address
-	# the server will accept (0: unlimited):
+  # Maximum number of simultaneous connections from a single IP address
+  # the server will accept (0: unlimited):
   MaxConnectionsIP = <%= node['ngircd']['limits']['max_connections_ip'] %>
 
-	# Maximum number of channels a user can be member of (0: no limit):
+  # Maximum number of channels a user can be member of (0: no limit):
   MaxJoins = <%= node['ngircd']['limits']['max_joins'] %>
 
-	# Maximum length of an user nick name (Default: 9, as in RFC 2812).
-	# Please note that all servers in an IRC network MUST use the same
-	# maximum nick name length!
+  # Maximum length of an user nick name (Default: 9, as in RFC 2812).
+  # Please note that all servers in an IRC network MUST use the same
+  # maximum nick name length!
   MaxNickLength = <%= node['ngircd']['limits']['max_nick_length'] %>
 
-	# After <PingTimeout> seconds of inactivity the server will send a
-	# PING to the peer to test whether it is alive or not.
+  # After <PingTimeout> seconds of inactivity the server will send a
+  # PING to the peer to test whether it is alive or not.
   PingTimeout = <%= node['ngircd']['limits']['ping_timeout'] %>
 
-	# If a client fails to answer a PING with a PONG within <PongTimeout>
-	# seconds, it will be disconnected by the server.
+  # If a client fails to answer a PING with a PONG within <PongTimeout>
+  # seconds, it will be disconnected by the server.
   PongTimeout = <%= node['ngircd']['limits']['pong_timeout'] %>
 
 [Options]
-	# Optional features and configuration options to further tweak the
-	# behavior of ngIRCd. If you want to get started quickly, you most
-	# probably don't have to make changes here -- they are all optional.
+  # Optional features and configuration options to further tweak the
+  # behavior of ngIRCd. If you want to get started quickly, you most
+  # probably don't have to make changes here -- they are all optional.
 
-	# Are remote IRC operators allowed to control this server, e.g.
-	# use commands like CONNECT, SQUIT, DIE, ...?
-	AllowRemoteOper = <%= node['ngircd']['options']['allow_remote_oper'] %>
+  # Are remote IRC operators allowed to control this server, e.g.
+  # use commands like CONNECT, SQUIT, DIE, ...?
+  AllowRemoteOper = <%= node['ngircd']['options']['allow_remote_oper'] %>
 
-	# A directory to chroot in when everything is initialized. It
-	# doesn't need to be populated if ngIRCd is compiled as a static
-	# binary. By default ngIRCd won't use the chroot() feature.
-	# ATTENTION: For this to work the server must have been started
-	# with root privileges!
-	;ChrootDir = <%= node['ngircd']['options']['chroot_dir'] %>
+  # A directory to chroot in when everything is initialized. It
+  # doesn't need to be populated if ngIRCd is compiled as a static
+  # binary. By default ngIRCd won't use the chroot() feature.
+  # ATTENTION: For this to work the server must have been started
+  # with root privileges!
+  ;ChrootDir = <%= node['ngircd']['options']['chroot_dir'] %>
 
-	# Set this hostname for every client instead of the real one.
-	# Please note: don't use the percentage sign ("%"), it is reserved for
-	# future extensions!
-	CloakHost = <%= node['ngircd']['options']['cloak_host'] %>
+  # Set this hostname for every client instead of the real one.
+  # Please note: don't use the percentage sign ("%"), it is reserved for
+  # future extensions!
+  CloakHost = <%= node['ngircd']['options']['cloak_host'] %>
 
-	# Set every clients' user name to their nick name
-	CloakUserToNick = <%= node['ngircd']['options']['cloak_user_to_nick'] %>
+  # Set every clients' user name to their nick name
+  CloakUserToNick = <%= node['ngircd']['options']['cloak_user_to_nick'] %>
 
-	# Try to connect to other irc servers using ipv4 and ipv6, if possible
-	ConnectIPv6 = <%= node['ngircd']['options']['connect_ipv6'] %>
-	ConnectIPv4 = <%= node['ngircd']['options']['connect_ipv4'] %>
+  # Try to connect to other irc servers using ipv4 and ipv6, if possible
+  ConnectIPv6 = <%= node['ngircd']['options']['connect_ipv6'] %>
+  ConnectIPv4 = <%= node['ngircd']['options']['connect_ipv4'] %>
 
-	# Don do any DNS lookups when a client connects to the server.
-	DNS = <%= node['ngircd']['options']['dns'] %>
+  # Don do any DNS lookups when a client connects to the server.
+  DNS = <%= node['ngircd']['options']['dns'] %>
 
-	# Do IDENT lookups, if ngIRCd has been compiled with support for it.
-	Ident = <%= node['ngircd']['options']['ident'] %>
+  # Do IDENT lookups, if ngIRCd has been compiled with support for it.
+  Ident = <%= node['ngircd']['options']['ident'] %>
 
-	# Enhance user privacy slightly (useful for IRC server on TOR or I2P)
-	# by censoring some information like idle time, logon time, etc.
-	MorePrivacy = <%= node['ngircd']['options']['more_privacy'] %>
+  # Enhance user privacy slightly (useful for IRC server on TOR or I2P)
+  # by censoring some information like idle time, logon time, etc.
+  MorePrivacy = <%= node['ngircd']['options']['more_privacy'] %>
 
-	# Normally ngIRCd doesn't send any messages to a client until it is
-	# registered. Enable this option to let the daemon send "NOTICE AUTH"
-	# messages to clients while connecting.
-	NoticeAuth = <%= node['ngircd']['options']['notice_auth'] %>
+  # Normally ngIRCd doesn't send any messages to a client until it is
+  # registered. Enable this option to let the daemon send "NOTICE AUTH"
+  # messages to clients while connecting.
+  NoticeAuth = <%= node['ngircd']['options']['notice_auth'] %>
 
-	# Should IRC Operators be allowed to use the MODE command even if
-	# they are not(!) channel-operators?
+  # Should IRC Operators be allowed to use the MODE command even if
+  # they are not(!) channel-operators?
   OperCanUseMode = <%= node['ngircd']['options']['oper_can_use_mode'] %>
 
-	# Mask IRC Operator mode requests as if they were coming from the
-	# server? (This is a compatibility hack for ircd-irc2 servers)
-	OperServerMode = <%= node['ngircd']['options']['oper_server_mode'] %>
+  # Mask IRC Operator mode requests as if they were coming from the
+  # server? (This is a compatibility hack for ircd-irc2 servers)
+  OperServerMode = <%= node['ngircd']['options']['oper_server_mode'] %>
 
-	# Use PAM if ngIRCd has been compiled with support for it.
-	PAM = <%= node['ngircd']['options']['pam'] %>
+  # Use PAM if ngIRCd has been compiled with support for it.
+  PAM = <%= node['ngircd']['options']['pam'] %>
 
-	# Allow Pre-Defined Channels only (see Section [Channels])
-	PredefChannelsOnly = <%= node['ngircd']['options']['predef_channels_only'] %>
+  # Allow Pre-Defined Channels only (see Section [Channels])
+  PredefChannelsOnly = <%= node['ngircd']['options']['predef_channels_only'] %>
 
-	# Let ngIRCd send an "authentication PING" when a new client connects,
-	# and register this client only after receiving the corresponding
-	# "PONG" reply.
-	RequireAuthPing = <%= node['ngircd']['options']['require_auth_ping'] %>
+  # Let ngIRCd send an "authentication PING" when a new client connects,
+  # and register this client only after receiving the corresponding
+  # "PONG" reply.
+  RequireAuthPing = <%= node['ngircd']['options']['require_auth_ping'] %>
 
-	# Silently drop all incoming CTCP requests.
-	ScrubCTCP = <%= node['ngircd']['options']['scrub_ctcp'] %>
+  # Silently drop all incoming CTCP requests.
+  ScrubCTCP = <%= node['ngircd']['options']['scrub_ctcp'] %>
 
-	# Syslog "facility" to which ngIRCd should send log messages.
-	# Possible values are system dependent, but most probably auth, daemon,
-	# user and local1 through local7 are possible values; see syslog(3).
-	# Default is "local5" for historical reasons, you probably want to
-	# change this to "daemon", for example.
-	SyslogFacility = <%= node['ngircd']['options']['syslog_facility'] %>
+  # Syslog "facility" to which ngIRCd should send log messages.
+  # Possible values are system dependent, but most probably auth, daemon,
+  # user and local1 through local7 are possible values; see syslog(3).
+  # Default is "local5" for historical reasons, you probably want to
+  # change this to "daemon", for example.
+  SyslogFacility = <%= node['ngircd']['options']['syslog_facility'] %>
 
-	# Password required for using the WEBIRC command used by some
-	# Web-to-IRC gateways. If not set/empty, the WEBIRC command can't
-	# be used. (Default: not set)
-	;WebircPassword = <%= node['ngircd']['options']['webirc_password'] %>
+  # Password required for using the WEBIRC command used by some
+  # Web-to-IRC gateways. If not set/empty, the WEBIRC command can't
+  # be used. (Default: not set)
+  ;WebircPassword = <%= node['ngircd']['options']['webirc_password'] %>
 
 <% if node['ngircd']['use_ssl'] -%>
 [SSL]
-	# SSL-related configuration options. Please note that this section
-	# is only available when ngIRCd is compiled with support for SSL!
-	# So don't forget to remove the ";" above if this is the case ...
+  # SSL-related configuration options. Please note that this section
+  # is only available when ngIRCd is compiled with support for SSL!
+  # So don't forget to remove the ";" above if this is the case ...
 
-	# SSL Server Key Certificate
+  # SSL Server Key Certificate
   CertFile = <%= ::File.join node['ngircd']['dir'], "irc.pem" %>
 
-	# Diffie-Hellman parameters
-	;DHFile = /etc/ngircd/dhparams.pem
+  # Diffie-Hellman parameters
+  ;DHFile = /etc/ngircd/dhparams.pem
 
-	# SSL Server Key
+  # SSL Server Key
   KeyFile = <%= ::File.join node['ngircd']['dir'], "irc.pem" %>
 
-	# password to decrypt SSLKeyFile (OpenSSL only)
-	# Note that this Debian package was linked against GnuTLS so this
-	# option has no effect.
-	;KeyFilePassword = secret
+  # password to decrypt SSLKeyFile (OpenSSL only)
+  # Note that this Debian package was linked against GnuTLS so this
+  # option has no effect.
+  ;KeyFilePassword = secret
 
-	# Additional Listen Ports that expect SSL/TLS encrypted connections
+  # Additional Listen Ports that expect SSL/TLS encrypted connections
   Ports = <%= @ports %>
 <% end -%>
 
@@ -232,79 +232,79 @@
   # Password of the IRC operator
   Password = <%= operator['password'] %>
 
-	# Optional Mask from which /OPER will be accepted
-	;Mask = *!ident@somewhere.example.com
+  # Optional Mask from which /OPER will be accepted
+  ;Mask = *!ident@somewhere.example.com
 <% end -%>
 
 [Server]
-	# Other servers are configured in [Server] sections. If you
-	# configure a port for the connection, then this ngircd tries to
-	# connect to to the other server on the given port; if not it waits
-	# for the other server to connect.
-	# There may be more than one server block, one for each server.
-	#
-	# Server Groups:
-	# The ngIRCd allows "server groups": You can assign an "ID" to every
-	# server with which you want this ngIRCd to link. If a server of a
-	# group won't answer, the ngIRCd tries to connect to the next server
-	# in the given group. But the ngircd never tries to connect to two
-	# servers with the same group ID.
+  # Other servers are configured in [Server] sections. If you
+  # configure a port for the connection, then this ngircd tries to
+  # connect to to the other server on the given port; if not it waits
+  # for the other server to connect.
+  # There may be more than one server block, one for each server.
+  #
+  # Server Groups:
+  # The ngIRCd allows "server groups": You can assign an "ID" to every
+  # server with which you want this ngIRCd to link. If a server of a
+  # group won't answer, the ngIRCd tries to connect to the next server
+  # in the given group. But the ngircd never tries to connect to two
+  # servers with the same group ID.
 
-	# IRC name of the remote server, must match the "Name" variable in
-	# the [Global] section of the other server (when using ngIRCd).
-	;Name = irc2.example.net
+  # IRC name of the remote server, must match the "Name" variable in
+  # the [Global] section of the other server (when using ngIRCd).
+  ;Name = irc2.example.net
 
-	# Internet host name or IP address of the peer (only required when
-	# this server should establish the connection).
-	;Host = connect-to-host.example.net
+  # Internet host name or IP address of the peer (only required when
+  # this server should establish the connection).
+  ;Host = connect-to-host.example.net
 
-	# IP address to use as _source_ address for the connection. if
-	# unspecified, ngircd will let the operating system pick an address.
-	;Bind = 10.0.0.1
+  # IP address to use as _source_ address for the connection. if
+  # unspecified, ngircd will let the operating system pick an address.
+  ;Bind = 10.0.0.1
 
-	# Port of the server to which the ngIRCd should connect. If you
-	# assign no port the ngIRCd waits for incoming connections.
-	;Port = 6667
+  # Port of the server to which the ngIRCd should connect. If you
+  # assign no port the ngIRCd waits for incoming connections.
+  ;Port = 6667
 
-	# Own password for the connection. This password has to be configured
-	# as "PeerPassword" on the other server.
-	;MyPassword = MySecret
+  # Own password for the connection. This password has to be configured
+  # as "PeerPassword" on the other server.
+  ;MyPassword = MySecret
 
-	# Foreign password for this connection. This password has to be
-	# configured as "MyPassword" on the other server.
-	;PeerPassword = PeerSecret
+  # Foreign password for this connection. This password has to be
+  # configured as "MyPassword" on the other server.
+  ;PeerPassword = PeerSecret
 
-	# Group of this server (optional)
-	;Group = 123
+  # Group of this server (optional)
+  ;Group = 123
 
-	# Set the "Passive" option to "yes" if you don't want this ngIRCd to
-	# connect to the configured peer (same as leaving the "Port" variable
-	# empty). The advantage of this option is that you can actually
-	# configure a port an use the IRC command CONNECT more easily to
-	# manually connect this specific server later.
-	;Passive = no
+  # Set the "Passive" option to "yes" if you don't want this ngIRCd to
+  # connect to the configured peer (same as leaving the "Port" variable
+  # empty). The advantage of this option is that you can actually
+  # configure a port an use the IRC command CONNECT more easily to
+  # manually connect this specific server later.
+  ;Passive = no
 
-	# Connect to the remote server using TLS/SSL (Default: false)
-	;SSLConnect = yes
+  # Connect to the remote server using TLS/SSL (Default: false)
+  ;SSLConnect = yes
 
-	# Define a (case insensitive) mask matching nick names that should be
-	# treated as IRC services when introduced via this remote server.
-	# REGULAR SERVERS DON'T NEED this parameter, so leave it empty
-	# (which is the default).
-	# When you are connecting IRC services which mask as a IRC server
-	# and which use "virtual users" to communicate with, for example
-	# "NickServ" and "ChanServ", you should set this parameter to
-	# something like "*Serv".
-	;ServiceMask = *Serv
+  # Define a (case insensitive) mask matching nick names that should be
+  # treated as IRC services when introduced via this remote server.
+  # REGULAR SERVERS DON'T NEED this parameter, so leave it empty
+  # (which is the default).
+  # When you are connecting IRC services which mask as a IRC server
+  # and which use "virtual users" to communicate with, for example
+  # "NickServ" and "ChanServ", you should set this parameter to
+  # something like "*Serv".
+  ;ServiceMask = *Serv
 
 <% node['ngircd']['channels'].each do |channels| -%>
 [Channel]
-	# Pre-defined channels can be configured in [Channel] sections.
-	# Such channels are created by the server when starting up and even
-	# persist when there are no more members left.
-	# Persistent channels are marked with the mode 'P', which can be set
-	# and unset by IRC operators like other modes on the fly.
-	# There may be more than one [Channel] block, one for each channel.
+  # Pre-defined channels can be configured in [Channel] sections.
+  # Such channels are created by the server when starting up and even
+  # persist when there are no more members left.
+  # Persistent channels are marked with the mode 'P', which can be set
+  # and unset by IRC operators like other modes on the fly.
+  # There may be more than one [Channel] block, one for each channel.
 
   # Name of the channel
   Name = <%= channels['name'] %>
@@ -315,15 +315,15 @@
   # Initial channel modes
   Modes = <%= channels['modes'] %>
 
-	# initial channel password (mode k)
-	;Key = Secret
+  # initial channel password (mode k)
+  ;Key = Secret
 
-	# Key file, syntax for each line: "<user>:<nick>:<key>".
-	# Default: none.
-	;KeyFile = /etc/ngircd/#chan.key
+  # Key file, syntax for each line: "<user>:<nick>:<key>".
+  # Default: none.
+  ;KeyFile = /etc/ngircd/#chan.key
 
-	# maximum users per channel (mode l)
-	;MaxUsers = 23
+  # maximum users per channel (mode l)
+  ;MaxUsers = 23
 <% end -%>
 
 # -eof-
