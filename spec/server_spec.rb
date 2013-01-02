@@ -124,6 +124,10 @@ describe "ngircd::server" do
       it "executes in the proper cwd" do
         @chef_run.execute("create self-signed cert").cwd.should == "/etc/ngircd"
       end
+
+      it "executes as the proper user" do
+        @chef_run.execute("create self-signed cert").user.should == "irc"
+      end
     end
 
     describe "without ssl" do
