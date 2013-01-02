@@ -2,5 +2,6 @@ Cheffile.lock
 .bundle
 .cache
 .rvmrc
+.kitchen
 /cookbooks
 /tmp

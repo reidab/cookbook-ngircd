@@ -128,14 +128,26 @@ Installs/Configures ngircd
 Testing
 =====
 
-This cookbook is using [ChefSpec](https://github.com/acrmp/chefspec) for testing.
+This cookbook uses [ChefSpec](https://github.com/acrmp/chefspec) for
+unit-tests, and [Test Kitchen](https://github.com/opscode/test-kitchen)
+for integration testing.
 
-    $ cd $repo
+They don't play together nicely, due to JSON requirements.  So twiddling
+of the Gemfile is required when running tests.
+
+ChefSpec:
+
+    $ cd $repo # Twiddle Gemfile
     $ bundle
     $ librarian-chef install
-    $ ln -s ../ cookbooks/$short_repo_name # doesn't contain "cookbook-"
-    $ foodcritic cookbooks/$short_repo_name
-    $ rspec cookbooks/$short_repo_name
+    $ ln -s ../ cookbooks/ngircd
+    $ rspec cookbooks/ngircd
+
+Test Kitchen:
+
+    $ cd $repo # Twiddle Gemfile
+    $ bundle
+    $ kitchen test --platform ubuntu-12.04
 
 License and Author
 ==================

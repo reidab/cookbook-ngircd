@@ -1,0 +1,6 @@
+cookbook "cookbook-ngircd" do
+  lint :ignore => ["FC023"]
+
+  configuration "server" 
+  exclude :platform => "ubuntu-10.04", :configuration => "server"
+end

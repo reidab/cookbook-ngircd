@@ -46,7 +46,7 @@ GEM
     gist (3.1.1)
     highline (1.6.15)
     ipaddress (0.8.0)
-    json (1.6.1)
+    json (1.5.4)
     librarian (0.0.26)
       archive-tar-minitar (>= 0.5.2)
       chef (>= 0.10)
