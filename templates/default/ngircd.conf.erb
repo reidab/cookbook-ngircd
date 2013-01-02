@@ -50,7 +50,9 @@
 
   # Text file with the "message of the day" (MOTD). This message will
   # be shown to all users connecting to the server:
+  <% if node['ngircd']['motd_text'] -%>
   MotdFile = <%= node['ngircd']['motd'] %>
+  <% end -%>
 
   # A simple Phrase (<256 chars) if you don't want to use a motd file.
   ;MotdPhrase = "Hello. This is the Debian default MOTD sentence"

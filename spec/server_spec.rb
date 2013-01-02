@@ -56,8 +56,18 @@ describe "ngircd::server" do
     end
 
     it "has motd file" do
-      @chef_run.should create_file_with_content @file,
+      chef_run = ::ChefSpec::ChefRunner.new do |n|
+        n.set['ngircd'] = {}
+        n.set['ngircd']['motd_text'] = "motd text"
+      end.converge "ngircd::server"
+
+      chef_run.should create_file_with_content @file,
         "MotdFile = /etc/ngircd/ngircd.motd"
+    end
+
+    it "doesn't have motd file" do
+      @chef_run.should_not create_file_with_content @file,
+        "MotdFile = "
     end
 
     it "has server password" do
