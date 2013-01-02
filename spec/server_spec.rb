@@ -32,7 +32,32 @@ describe "ngircd::server" do
 
     it "has name" do
       @chef_run.should create_file_with_content @file,
-        "Name = irc.example.com"
+        "Name = irc.example.net"
+    end
+
+    it "has admin name" do
+      @chef_run.should create_file_with_content @file,
+        "AdminInfo1 = Debian User"
+    end
+
+    it "has admin location" do
+      @chef_run.should create_file_with_content @file,
+        "AdminInfo2 = Debian City"
+    end
+
+    it "has admin email" do
+      @chef_run.should create_file_with_content @file,
+        "AdminEMail = irc@irc.example.com"
+    end
+
+    it "has listen address" do
+      @chef_run.should create_file_with_content @file,
+        "Listen = 0.0.0.0"
+    end
+
+    it "has motd file" do
+      @chef_run.should create_file_with_content @file,
+        "MotdFile = /etc/ngircd/ngircd.motd"
     end
 
     it "has server password" do
@@ -50,30 +75,15 @@ describe "ngircd::server" do
         "Password = "
     end
 
-    it "has admin name" do
+    it "has pid file" do
       @chef_run.should create_file_with_content @file,
-        "AdminInfo1 = Description"
-    end
-
-    it "has admin location" do
-      @chef_run.should create_file_with_content @file,
-        "AdminInfo2 = Location"
-    end
-
-    it "has admin email" do
-      @chef_run.should create_file_with_content @file,
-        "AdminEMail = admin@irc.server"
-    end
-
-    it "has listen address" do
-      @chef_run.should create_file_with_content @file,
-        "Listen = 0.0.0.0"
+        "PidFile = /var/run/ngircd/ngircd.pid"
     end
 
     describe "with ssl" do
       it "has listen port" do
         @chef_run.should create_file_with_content @file,
-          "SSLPorts = 6697"
+          "Ports = 6697"
       end
 
       it "has listen ports" do
@@ -89,12 +99,12 @@ describe "ngircd::server" do
 
       it "has ssl key file" do
         @chef_run.should create_file_with_content @file,
-          "SSLKeyFile = /etc/ngircd/irc.pem"
+          "KeyFile = /etc/ngircd/irc.pem"
       end
 
       it "has ssl cert file" do
         @chef_run.should create_file_with_content @file,
-          "SSLCertFile = /etc/ngircd/irc.pem"
+          "CertFile = /etc/ngircd/irc.pem"
       end
 
       #TODO(retr0h): Added self-signed cert ability to openssl cookbook.
@@ -102,7 +112,7 @@ describe "ngircd::server" do
         @chef_run.should execute_command <<-EOF.gsub(/^\s{10}/, "")
           umask 077
           openssl genrsa 2048 > irc.key
-          openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=irc.example.com/emailAddress=admin@irc.server -new -x509 -nodes -sha1 -days 3650 -key irc.key > irc.crt
+          openssl req -subj /C=US/ST=Several/L=Locality/O=Example/OU=Operations/CN=irc.example.net/emailAddress=irc@irc.example.com -new -x509 -nodes -sha1 -days 3650 -key irc.key > irc.crt
           cat irc.key irc.crt > irc.pem
         EOF
       end
@@ -146,49 +156,133 @@ describe "ngircd::server" do
       end
     end
 
-    it "has motd file" do
+    it "has server gid" do
       @chef_run.should create_file_with_content @file,
-        "MotdFile = /etc/ngircd/ngircd.motd"
+        "ServerGID = irc"
     end
 
-    it "has pid file" do
+    it "has server uid" do
       @chef_run.should create_file_with_content @file,
-        "PidFile = /var/run/ngircd/ngircd.pid"
+        "ServerUID = irc"
     end
 
-    it "has ping timeout" do
-      @chef_run.should create_file_with_content @file,
-        "PingTimeout = 120"
+    describe "limits" do
+      it "has connect retry" do
+        @chef_run.should create_file_with_content @file,
+          "ConnectRetry = 60"
+      end
+
+      it "has max connections" do
+        @chef_run.should create_file_with_content @file,
+          "MaxConnections = 500"
+      end
+
+      it "has max connections ip" do
+        @chef_run.should create_file_with_content @file,
+          "MaxConnectionsIP = 10"
+      end
+
+      it "has max join" do
+        @chef_run.should create_file_with_content @file,
+          "MaxJoins = 10"
+      end
+
+      it "has max nick length" do
+        @chef_run.should create_file_with_content @file,
+          "MaxNickLength = 9"
+      end
+
+      it "has ping timeout" do
+        @chef_run.should create_file_with_content @file,
+          "PingTimeout = 120"
+      end
+
+      it "has pong timeout" do
+        @chef_run.should create_file_with_content @file,
+          "PongTimeout = 20"
+      end
     end
 
-    it "has pong timeout" do
-      @chef_run.should create_file_with_content @file,
-        "PongTimeout = 20"
-    end
+    describe "options" do
+      it "has allow remote oper" do
+        @chef_run.should create_file_with_content @file,
+          "AllowRemoteOper = no"
+      end
 
-    it "has connect retry" do
-      @chef_run.should create_file_with_content @file,
-        "ConnectRetry = 60"
-    end
+      it "has cloak host" do
+        @chef_run.should create_file_with_content @file,
+          "CloakHost = irc.example.net"
+      end
 
-    it "has oper can use mode" do
-      @chef_run.should create_file_with_content @file,
-        "OperCanUseMode = yes"
-    end
+      it "has cloak user to nick" do
+        @chef_run.should create_file_with_content @file,
+          "CloakUserToNick = yes"
+      end
 
-    it "has max connections" do
-      @chef_run.should create_file_with_content @file,
-        "MaxConnections = 500"
-    end
+      it "has connect ipv6" do
+        @chef_run.should create_file_with_content @file,
+          "ConnectIPv6 = yes"
+      end
 
-    it "has max connections ip" do
-      @chef_run.should create_file_with_content @file,
-        "MaxConnectionsIP = 10"
-    end
+      it "has connect ipv4" do
+        @chef_run.should create_file_with_content @file,
+          "ConnectIPv4 = yes"
+      end
 
-    it "has max join" do
-      @chef_run.should create_file_with_content @file,
-        "MaxJoins = 10"
+      it "has dns" do
+        @chef_run.should create_file_with_content @file,
+          "DNS = yes"
+      end
+
+      it "has ident" do
+        @chef_run.should create_file_with_content @file,
+          "Ident = yes"
+      end
+
+      it "has more privacy" do
+        @chef_run.should create_file_with_content @file,
+          "MorePrivacy = no"
+      end
+
+      it "has notice auth" do
+        @chef_run.should create_file_with_content @file,
+          "NoticeAuth = no"
+      end
+
+      it "has oper can use mode" do
+        @chef_run.should create_file_with_content @file,
+          "OperCanUseMode = yes"
+      end
+
+      it "has oper server mode" do
+        @chef_run.should create_file_with_content @file,
+          "OperServerMode = no"
+      end
+
+      it "has pam" do
+        @chef_run.should create_file_with_content @file,
+          "PAM = no"
+      end
+
+      it "has predef channels only" do
+        @chef_run.should create_file_with_content @file,
+          "PredefChannelsOnly = no"
+      end
+
+      it "has require auth ping" do
+        @chef_run.should create_file_with_content @file,
+          "RequireAuthPing = no"
+      end
+
+      it "has scrub ctcp" do
+        @chef_run.should create_file_with_content @file,
+          "ScrubCTCP = no"
+      end
+
+      it "has syslog facility" do
+        @chef_run.should create_file_with_content @file,
+          "SyslogFacility = local1"
+      end
     end
 
     it "has channels" do

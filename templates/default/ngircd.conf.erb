@@ -94,31 +94,31 @@
 
   # The server tries every <ConnectRetry> seconds to establish a link
   # to not yet (or no longer) connected servers.
-  ConnectRetry = <%= node['ngircd']['connect_retry'] %>
+  ConnectRetry = <%= node['ngircd']['limits']['connect_retry'] %>
 
 	# Maximum number of simultaneous in- and outbound connections the
 	# server is allowed to accept (0: unlimited):
-  MaxConnections = <%= node['ngircd']['max_connections'] %>
+  MaxConnections = <%= node['ngircd']['limits']['max_connections'] %>
 
 	# Maximum number of simultaneous connections from a single IP address
 	# the server will accept (0: unlimited):
-  MaxConnectionsIP = <%= node['ngircd']['max_connections_ip'] %>
+  MaxConnectionsIP = <%= node['ngircd']['limits']['max_connections_ip'] %>
 
 	# Maximum number of channels a user can be member of (0: no limit):
-  MaxJoins = <%= node['ngircd']['max_joins'] %>
+  MaxJoins = <%= node['ngircd']['limits']['max_joins'] %>
 
 	# Maximum length of an user nick name (Default: 9, as in RFC 2812).
 	# Please note that all servers in an IRC network MUST use the same
 	# maximum nick name length!
-	;MaxNickLength = 9
+  MaxNickLength = <%= node['ngircd']['limits']['max_nick_length'] %>
 
 	# After <PingTimeout> seconds of inactivity the server will send a
 	# PING to the peer to test whether it is alive or not.
-  PingTimeout = <%= node['ngircd']['ping_timeout'] %>
+  PingTimeout = <%= node['ngircd']['limits']['ping_timeout'] %>
 
 	# If a client fails to answer a PING with a PONG within <PongTimeout>
 	# seconds, it will be disconnected by the server.
-  PongTimeout = <%= node['ngircd']['pong_timeout'] %>
+  PongTimeout = <%= node['ngircd']['limits']['pong_timeout'] %>
 
 [Options]
 	# Optional features and configuration options to further tweak the
@@ -127,75 +127,75 @@
 
 	# Are remote IRC operators allowed to control this server, e.g.
 	# use commands like CONNECT, SQUIT, DIE, ...?
-	;AllowRemoteOper = no
+	AllowRemoteOper = <%= node['ngircd']['options']['allow_remote_oper'] %>
 
 	# A directory to chroot in when everything is initialized. It
 	# doesn't need to be populated if ngIRCd is compiled as a static
 	# binary. By default ngIRCd won't use the chroot() feature.
 	# ATTENTION: For this to work the server must have been started
 	# with root privileges!
-	;ChrootDir = /var/empty
+	;ChrootDir = <%= node['ngircd']['options']['chroot_dir'] %>
 
 	# Set this hostname for every client instead of the real one.
 	# Please note: don't use the percentage sign ("%"), it is reserved for
 	# future extensions!
-	;CloakHost = irc.example.net
+	CloakHost = <%= node['ngircd']['options']['cloak_host'] %>
 
 	# Set every clients' user name to their nick name
-	;CloakUserToNick = yes
+	CloakUserToNick = <%= node['ngircd']['options']['cloak_user_to_nick'] %>
 
 	# Try to connect to other irc servers using ipv4 and ipv6, if possible
-	;ConnectIPv6 = yes
-	;ConnectIPv4 = yes
+	ConnectIPv6 = <%= node['ngircd']['options']['connect_ipv6'] %>
+	ConnectIPv4 = <%= node['ngircd']['options']['connect_ipv4'] %>
 
 	# Don do any DNS lookups when a client connects to the server.
-	;DNS = yes
+	DNS = <%= node['ngircd']['options']['dns'] %>
 
 	# Do IDENT lookups, if ngIRCd has been compiled with support for it.
-	;Ident = yes
+	Ident = <%= node['ngircd']['options']['ident'] %>
 
 	# Enhance user privacy slightly (useful for IRC server on TOR or I2P)
 	# by censoring some information like idle time, logon time, etc.
-	;MorePrivacy = no
+	MorePrivacy = <%= node['ngircd']['options']['more_privacy'] %>
 
 	# Normally ngIRCd doesn't send any messages to a client until it is
 	# registered. Enable this option to let the daemon send "NOTICE AUTH"
 	# messages to clients while connecting.
-	;NoticeAuth = no
+	NoticeAuth = <%= node['ngircd']['options']['notice_auth'] %>
 
 	# Should IRC Operators be allowed to use the MODE command even if
 	# they are not(!) channel-operators?
-  OperCanUseMode = <%= node['ngircd']['oper_can_use_mode'] %>
+  OperCanUseMode = <%= node['ngircd']['options']['oper_can_use_mode'] %>
 
 	# Mask IRC Operator mode requests as if they were coming from the
 	# server? (This is a compatibility hack for ircd-irc2 servers)
-	;OperServerMode = no
+	OperServerMode = <%= node['ngircd']['options']['oper_server_mode'] %>
 
 	# Use PAM if ngIRCd has been compiled with support for it.
-	PAM = no
+	PAM = <%= node['ngircd']['options']['pam'] %>
 
 	# Allow Pre-Defined Channels only (see Section [Channels])
-	;PredefChannelsOnly = no
+	PredefChannelsOnly = <%= node['ngircd']['options']['predef_channels_only'] %>
 
 	# Let ngIRCd send an "authentication PING" when a new client connects,
 	# and register this client only after receiving the corresponding
 	# "PONG" reply.
-	;RequireAuthPing = no
+	RequireAuthPing = <%= node['ngircd']['options']['require_auth_ping'] %>
 
 	# Silently drop all incoming CTCP requests.
-	;ScrubCTCP = no
+	ScrubCTCP = <%= node['ngircd']['options']['scrub_ctcp'] %>
 
 	# Syslog "facility" to which ngIRCd should send log messages.
 	# Possible values are system dependent, but most probably auth, daemon,
 	# user and local1 through local7 are possible values; see syslog(3).
 	# Default is "local5" for historical reasons, you probably want to
 	# change this to "daemon", for example.
-	SyslogFacility = local1
+	SyslogFacility = <%= node['ngircd']['options']['syslog_facility'] %>
 
 	# Password required for using the WEBIRC command used by some
 	# Web-to-IRC gateways. If not set/empty, the WEBIRC command can't
 	# be used. (Default: not set)
-	;WebircPassword = xyz
+	;WebircPassword = <%= node['ngircd']['options']['webirc_password'] %>
 
 <% if node['ngircd']['use_ssl'] -%>
 [SSL]
