@@ -9,6 +9,7 @@ Requirements
 ============
 
 * Chef 0.8+
+* Ubuntu >= 12.04
 
 Attributes
 ==========
