@@ -110,7 +110,8 @@ Creating channels.
 "channels": [{
     "name": "name of channel",
     "topic": "channel topic",
-    "modes": "channel modes"
+    "modes": "channel modes",
+    "key": "channel key (optional, include 'k' in modes to require key)"
 }]
 ```
 
