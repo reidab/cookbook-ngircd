@@ -69,15 +69,5 @@ template node['ngircd']['conf'] do
   group  node['ngircd']['group']
   mode   00600
 
-  if node['ngircd']['use_ssl']
-    ports = node['ngircd']['ssl_ports']
-  else
-    ports = node['ngircd']['non_ssl_ports']
-  end
-
-  variables(
-    :ports => ports.join(",")
-  )
-
   notifies :restart, "service[ngircd]"
 end
