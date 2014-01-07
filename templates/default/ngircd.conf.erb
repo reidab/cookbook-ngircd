@@ -70,10 +70,10 @@
   # Keep this setting in sync with PIDFILE in /etc/init.d/ngircd
   PidFile = <%= node['ngircd']['pid_file'] %>
 
-  <% unless node['ngircd']['use_ssl'] -%>
+  <% unless node['ngircd']['non_ssl_ports'].empty? -%>
   # Ports on which the server should listen. There may be more than
   # one port, separated with ",".
-  Ports = <%= @ports %>
+  Ports = <%= node['ngircd']['non_ssl_ports'].join(",") %>
   <% end -%>
 
   # Group ID under which the ngircd should run; you can use the name
@@ -220,7 +220,7 @@
   ;KeyFilePassword = secret
 
   # Additional Listen Ports that expect SSL/TLS encrypted connections
-  Ports = <%= @ports %>
+  Ports = <%= node['ngircd']['ssl_ports'].join(",") %>
 <% end -%>
 
 <% node['ngircd']['operators'].each do |operator| -%>
