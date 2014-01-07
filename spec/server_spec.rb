@@ -304,7 +304,8 @@ describe "ngircd::server" do
         n.set['ngircd']['channels'] = [{
           "name" => "channel1",
           "topic" => "topic1",
-          "modes" => "modes1"
+          "modes" => "modes1",
+          "key" => "key1"
         }]
       end.converge "ngircd::server"
       chef_run.should create_file_with_content @file,
@@ -315,6 +316,8 @@ describe "ngircd::server" do
         "Topic = topic1"
       chef_run.should create_file_with_content @file,
         "Modes = modes1"
+      chef_run.should create_file_with_content @file,
+        "Key = key1"
     end
 
     it "doesn't have channels" do
