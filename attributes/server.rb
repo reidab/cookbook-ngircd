@@ -62,5 +62,6 @@ default['ngircd']['options']['scrub_ctcp'] = "no"
 default['ngircd']['options']['syslog_facility'] = "local1"
 default['ngircd']['options']['webirc_password'] = "xyz"
 
-default['ngircd']['operators'] = {}
-default['ngircd']['channels'] = {}
+default['ngircd']['operators'] = []
+default['ngircd']['servers'] = []
+default['ngircd']['channels'] = []

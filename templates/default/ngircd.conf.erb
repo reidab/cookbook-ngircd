@@ -238,6 +238,7 @@
   ;Mask = *!ident@somewhere.example.com
 <% end -%>
 
+<% node['ngircd']['servers'].each do |server| -%>
 [Server]
   # Other servers are configured in [Server] sections. If you
   # configure a port for the connection, then this ngircd tries to
@@ -254,41 +255,58 @@
 
   # IRC name of the remote server, must match the "Name" variable in
   # the [Global] section of the other server (when using ngIRCd).
-  ;Name = irc2.example.net
+  Name = <%= server['name'] %>
 
+  <% if server['host'] %>
   # Internet host name or IP address of the peer (only required when
   # this server should establish the connection).
-  ;Host = connect-to-host.example.net
+  Host = <%= server['host'] %>
+  <% end %>
 
+  <% if server['bind'] %>
   # IP address to use as _source_ address for the connection. if
   # unspecified, ngircd will let the operating system pick an address.
-  ;Bind = 10.0.0.1
+  Bind = <%= server['bind'] %>
+  <% end %>
 
+  <% if server['port'] %>
   # Port of the server to which the ngIRCd should connect. If you
   # assign no port the ngIRCd waits for incoming connections.
-  ;Port = 6667
+  Port = <%= server['port'] %>
+  <% end %>
 
+  <% if server['my_password'] %>
   # Own password for the connection. This password has to be configured
   # as "PeerPassword" on the other server.
-  ;MyPassword = MySecret
+  MyPassword = <%= server['my_password'] %>
+  <% end %>
 
+  <% if server['peer_password'] %>
   # Foreign password for this connection. This password has to be
   # configured as "MyPassword" on the other server.
-  ;PeerPassword = PeerSecret
+  PeerPassword = <%= server['peer_password'] %>
+  <% end %>
 
+  <% if server['group'] %>
   # Group of this server (optional)
-  ;Group = 123
+  Group = <%= server['group'] %>
+  <% end %>
 
+  <% if server.has_key?('passive') != nil %>
   # Set the "Passive" option to "yes" if you don't want this ngIRCd to
   # connect to the configured peer (same as leaving the "Port" variable
   # empty). The advantage of this option is that you can actually
   # configure a port an use the IRC command CONNECT more easily to
   # manually connect this specific server later.
-  ;Passive = no
+  Passive = <%= server['passive'] ? 'yes' : 'no' %>
+  <% end %>
 
+  <% if server.has_key?('ssl_connect') %>
   # Connect to the remote server using TLS/SSL (Default: false)
-  ;SSLConnect = yes
+  SSLConnect = <%= server['ssl_connect'] ? 'yes' : 'no' %>
+  <% end %>
 
+  <% if server['service_mask'] %>
   # Define a (case insensitive) mask matching nick names that should be
   # treated as IRC services when introduced via this remote server.
   # REGULAR SERVERS DON'T NEED this parameter, so leave it empty
@@ -297,7 +315,10 @@
   # and which use "virtual users" to communicate with, for example
   # "NickServ" and "ChanServ", you should set this parameter to
   # something like "*Serv".
-  ;ServiceMask = *Serv
+  ServiceMask = <%= server['service_mask'] %>
+  <% end %>
+
+<% end %>
 
 <% node['ngircd']['channels'].each do |channels| -%>
 [Channel]
