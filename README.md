@@ -3,8 +3,6 @@ Description
 
 Installs/Configures ngircd
 
-Will likely add Server Peering/Configuration over the next few weeks.
-
 Requirements
 ============
 
@@ -113,6 +111,24 @@ Creating channels.
     "modes": "channel modes",
     "key": "channel key (optional, include 'k' in modes to require key)"
 }]
+```
+Configuring peer servers:
+
+```json
+"servers": [
+  {
+    "name": "name of server",
+    "host": "(optional) hostname or IP of server",
+    "bind": "(optional) ip to use as source for connection",
+    "port": "(optional) port to connect to",
+    "my_password": "(optional) own password for connection",
+    "peer_password": "(optional) remote password for connection",
+    "group": "(optional) group of this server",
+    "passive": nil/true/FALSE,
+    "ssl_connect": nil/true/FALSE,
+    "service_mask": "*Serv mask matching nick names that should be treated as services"
+  }
+]
 ```
 
 Usage
